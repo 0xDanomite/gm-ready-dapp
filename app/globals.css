@@ -26,8 +26,10 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
+/* custom wallet styling goes here */
+
+/* .dynamic-shadow-dom {
+  --dynamic-connect-button-background: #000;
+  --dynamic-connect-button-color: #fff;
+  --dynamic-text-primary: #fff;
+} */
