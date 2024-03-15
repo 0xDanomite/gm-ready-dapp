@@ -26,11 +26,11 @@ export default function RootLayout({
         settings={{
           environmentId: '2ddebf12-13c3-49c8-ba67-c2ecb3da5edc',
           walletConnectors: [EthereumWalletConnectors],
-          eventsCallbacks: {
-            onAuthSuccess: (args) => {
-              console.log('onAuthSuccess was called', args);
-            },
-          },
+          // eventsCallbacks: {
+          //   onAuthSuccess: (args) => {
+          //     console.log('onAuthSuccess was called', args);
+          //   },
+          // },
         }}
       >
         <DynamicWagmiConnector>
