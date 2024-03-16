@@ -12,15 +12,15 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {
-  checkAddressInLocalStorage,
+  checkAddress,
   addAddressToLocalStorage,
-  checkOuraKeyInLocalStorage,
-} from '@/lib/localStorage';
+  checkOuraKey,
+} from '@/lib/dataHelpers';
 import Link from 'next/link';
 
 export default function Home({}) {
   // access context from dynamic widget about logged in status
-  const { isAuthenticated, user, primaryWallet } = useDynamicContext();
+  const { user, primaryWallet } = useDynamicContext();
   const [readinessData, setReadinessData] = useState(null);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -59,7 +59,7 @@ export default function Home({}) {
 
   // check if it's an address used before
   const currentAddress = getAddress();
-  if (currentAddress && !checkAddressInLocalStorage(currentAddress)) {
+  if (currentAddress && !checkAddress(currentAddress)) {
     addAddressToLocalStorage(currentAddress);
   }
 
@@ -75,12 +75,12 @@ export default function Home({}) {
         </CardContent>
         <CardFooter className="flex justify-between">
           {/* <Button variant="outline">Cancel</Button> */}
-          {getAddress() && !checkOuraKeyInLocalStorage(getAddress()) && (
+          {getAddress() && !checkOuraKey(getAddress()) && (
             <Button onClick={() => onConnectOura()}>Connect to Oura</Button>
           )}
-          {getAddress() && checkOuraKeyInLocalStorage(getAddress()) && (
+          {getAddress() && checkOuraKey(getAddress()) && (
             <Link href="/oura">
-              <button>See readiness</button>
+              <button>Continue</button>
             </Link>
           )}
         </CardFooter>
