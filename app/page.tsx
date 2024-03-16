@@ -1,9 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DynamicWidget } from '../lib/dynamic';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
-import { Dialog } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/button';
 import {
   Card,

@@ -22,21 +22,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <DynamicContextProvider
-        settings={{
-          environmentId: '2ddebf12-13c3-49c8-ba67-c2ecb3da5edc',
-          walletConnectors: [EthereumWalletConnectors],
-          // eventsCallbacks: {
-          //   onAuthSuccess: (args) => {
-          //     console.log('onAuthSuccess was called', args);
-          //   },
-          // },
-        }}
-      >
-        <DynamicWagmiConnector>
-          <body className={inter.className}>{children}</body>
-        </DynamicWagmiConnector>
-      </DynamicContextProvider>
+      <body className={inter.className}>
+        <DynamicContextProvider
+          settings={{
+            environmentId: '2ddebf12-13c3-49c8-ba67-c2ecb3da5edc',
+            walletConnectors: [EthereumWalletConnectors],
+          }}
+        >
+          <DynamicWagmiConnector>
+            <div>{children}</div>
+          </DynamicWagmiConnector>
+        </DynamicContextProvider>
+      </body>
     </html>
   );
 }
