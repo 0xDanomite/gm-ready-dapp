@@ -104,7 +104,8 @@ export default function OuraPage({}) {
     <div className="container">
       <h2>ZZZs</h2>
       {getAddress() === ouraAddress && ouraData && 'Connected!'}
-      {ouraData && ouraData.map((d) => <DataDisplay data={d} />)}
+      {ouraData &&
+        ouraData.map((d: any) => <DataDisplay key={d.id} data={d} />)}
     </div>
   );
 }
