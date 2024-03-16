@@ -4,7 +4,7 @@ const nextConfig = {
     missingSuspenseWithCSRBailout: false,
   },
   env: {
-    SERVER_URL: 'http://localhost:8000',
+    SERVER_URL: 'https://gm-ready.onrender.com',
   },
 };
 
