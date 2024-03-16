@@ -11,6 +11,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import {
+  checkAddressInLocalStorage,
+  addAddressToLocalStorage,
+  checkOuraKeyInLocalStorage,
+} from '@/lib/localStorage';
+import Link from 'next/link';
 
 export default function Home({}) {
   // access context from dynamic widget about logged in status
@@ -24,7 +30,7 @@ export default function Home({}) {
     const connectedAddress = getAddress();
     console.log(connectedAddress);
 
-    const url = `https://gm-ready.onrender.com/promptOuraAuth?userAddress=${connectedAddress}`;
+    const url = `${process.env.SERVER_URL}/promptOuraAuth?userAddress=${connectedAddress}`;
 
     // Make the HTTP request
     const ouraAuthUrl = await fetch(url)
@@ -51,6 +57,12 @@ export default function Home({}) {
     return address;
   };
 
+  // check if it's an address used before
+  const currentAddress = getAddress();
+  if (currentAddress && !checkAddressInLocalStorage(currentAddress)) {
+    addAddressToLocalStorage(currentAddress);
+  }
+
   return (
     <div className="flex items-center justify-between w-full p-6 lg:px-8">
       <Card className="w-[350px]">
@@ -63,8 +75,13 @@ export default function Home({}) {
         </CardContent>
         <CardFooter className="flex justify-between">
           {/* <Button variant="outline">Cancel</Button> */}
-          {getAddress() && (
+          {getAddress() && !checkOuraKeyInLocalStorage(getAddress()) && (
             <Button onClick={() => onConnectOura()}>Connect to Oura</Button>
+          )}
+          {getAddress() && checkOuraKeyInLocalStorage(getAddress()) && (
+            <Link href="/oura">
+              <button>See readiness</button>
+            </Link>
           )}
         </CardFooter>
       </Card>

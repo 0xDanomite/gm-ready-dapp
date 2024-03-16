@@ -2,6 +2,11 @@
 import { useEffect, useState } from 'react';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import {
+  updateOuraKeyInLocalStorage,
+  checkOuraKeyInLocalStorage,
+  getOuraKeyFromLocalStorage,
+} from '@/lib/localStorage';
 
 const processSillyAdressParam = (addressStr: any) => {
   if (addressStr && addressStr.charAt(0) === '=') {
@@ -75,18 +80,8 @@ export default function OuraPage({}) {
   };
   const searchParams = useSearchParams();
 
-  useEffect(() => {
-    const oa = processSillyAdressParam(searchParams.get('state'));
-    setOuraAddress(oa);
-
-    const fragment = window.location.hash;
-
-    // Parse the fragment to extract the value of access_token
-    const accessToken = new URLSearchParams(fragment.slice(1)).get(
-      'access_token'
-    );
-
-    const url = `https://gm-ready.onrender.com/getReadinessData/2024-03-08/2024-03-15?access_token=${accessToken}&state=${oa}`;
+  const getOuraData = (address: any, ouraToken: any) => {
+    const url = `${process.env.SERVER_URL}/getReadinessData/2024-03-08/2024-03-15?access_token=${ouraToken}&state=${address}`;
     console.log(url);
     const ouraData = fetch(url)
       .then((response) => response.json())
@@ -98,12 +93,34 @@ export default function OuraPage({}) {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
+  };
+
+  useEffect(() => {
+    const fragment = window.location.hash;
+    // read token and account from url ()
+    if (fragment.length) {
+      const accessToken = new URLSearchParams(fragment.slice(1)).get(
+        'access_token'
+      );
+      const oa: any = new URLSearchParams(fragment.slice(1)).get('state');
+      setOuraAddress(oa);
+
+      updateOuraKeyInLocalStorage(oa, accessToken);
+      getOuraData(oa, accessToken);
+    } else {
+      // reuse token - read from local storage
+      const currentAddress = getAddress();
+      console.log(currentAddress);
+      const token = getOuraKeyFromLocalStorage(getAddress());
+      console.log(token);
+      getOuraData(currentAddress, token);
+    }
   }, []);
 
   return (
     <div className="container">
       <h2>ZZZs</h2>
-      {getAddress() === ouraAddress && ouraData && 'Connected!'}
+      {/* {getAddress() === ouraAddress && ouraData && 'Connected!'} */}
       {ouraData &&
         ouraData.map((d: any) => <DataDisplay key={d.id} data={d} />)}
     </div>
