@@ -64,27 +64,55 @@ export default function Home({}) {
   }
 
   return (
-    <div className="flex items-center justify-between w-full p-6 lg:px-8">
-      <Card className="w-[350px]">
-        <CardHeader>
-          <CardTitle>GM Ready</CardTitle>
-          <CardDescription>Readiness scores onchain</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <DynamicWidget />
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          {/* <Button variant="outline">Cancel</Button> */}
-          {getAddress() && !checkOuraKey(getAddress()) && (
+    <div className=" items-center justify-between w-full p-6 lg:px-8">
+      <div>
+        {getAddress() && !checkOuraKey(getAddress()) && (
+          <div className="my-20 block items-center">
             <Button onClick={() => onConnectOura()}>Connect to Oura</Button>
-          )}
-          {getAddress() && checkOuraKey(getAddress()) && (
+          </div>
+        )}
+        {getAddress() && checkOuraKey(getAddress()) && (
+          <div className="my-20 block">
             <Link href="/oura">
-              <button>Continue</button>
+              <Button>Continue</Button>
             </Link>
-          )}
-        </CardFooter>
-      </Card>
+          </div>
+        )}
+      </div>
+      <div className="flex">
+        <Card className="w-[50%]">
+          <CardHeader>
+            <CardTitle>@steph.gmready.eth</CardTitle>
+            <CardDescription>needs help</CardDescription>
+          </CardHeader>
+          <CardContent>55</CardContent>
+          <CardFooter className="flex justify-between"></CardFooter>
+        </Card>
+        <Card className="w-[50%]">
+          <CardHeader>
+            <CardTitle>@dan.gmready.eth</CardTitle>
+            <CardDescription>is doing great</CardDescription>
+          </CardHeader>
+          <CardContent>82</CardContent>
+          <CardFooter className="flex justify-between"></CardFooter>
+        </Card>
+        <Card className="w-[50%]">
+          <CardHeader>
+            <CardTitle>@teddy.gmready.eth</CardTitle>
+            <CardDescription>is having a great day</CardDescription>
+          </CardHeader>
+          <CardContent>92</CardContent>
+          <CardFooter className="flex justify-between"></CardFooter>
+        </Card>
+        <Card className="w-[50%]">
+          <CardHeader>
+            <CardTitle>@raza.gmready.eth</CardTitle>
+            <CardDescription>needs help</CardDescription>
+          </CardHeader>
+          <CardContent>52</CardContent>
+          <CardFooter className="flex justify-between"></CardFooter>
+        </Card>
+      </div>
     </div>
   );
 }

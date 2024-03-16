@@ -74,6 +74,7 @@ export default function OuraPage({}) {
   const router = useRouter();
   // access context from dynamic widget about logged in status
   const { isAuthenticated, user, primaryWallet } = useDynamicContext();
+  console.log(user, primaryWallet);
   const [ouraAddress, setOuraAddress] = useState(null);
   const [ouraData, setOuraData] = useState([]);
   const [username, setUsername] = useState('');
@@ -115,19 +116,19 @@ export default function OuraPage({}) {
       router.push('/ens');
     } else {
       // reuse token - read from local storage
-      const currentAddress = getAddress();
+      const currentAddress = primaryWallet?.address;
       console.log(currentAddress);
-      const token = getOuraKey(getAddress());
+      const token = getOuraKey(primaryWallet?.address);
       console.log(token);
       getOuraData(currentAddress, token);
       setUsername(readENSNameByAddress(currentAddress));
     }
-  }, []);
+  }, [primaryWallet]);
 
   return (
     <div className="container">
-      <h2>gm {username}</h2>
-      {/* {getAddress() === ouraAddress && ouraData && 'Connected!'} */}
+      {username ? <h2>gm {username}</h2> : 'Loading...'}
+      {/* {primaryWallet?.address === ouraAddress && ouraData && 'Connected!'} */}
       {ouraData &&
         ouraData.map((d: any) => <DataDisplay key={d.id} data={d} />)}
     </div>

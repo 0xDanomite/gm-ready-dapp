@@ -7,6 +7,7 @@ import {
   DynamicWagmiConnector,
   EthereumWalletConnectors,
 } from '../lib/dynamic';
+import NavBar from '@/components/NavBar';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,6 +23,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+          rel="stylesheet"
+        />
+      </head>
       <body className={inter.className}>
         <DynamicContextProvider
           settings={{
@@ -30,9 +37,13 @@ export default function RootLayout({
           }}
         >
           <DynamicWagmiConnector>
-            <div>{children}</div>
+            <div>
+              <NavBar />
+              <div className="mt-20">{children}</div>
+            </div>
           </DynamicWagmiConnector>
         </DynamicContextProvider>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
       </body>
     </html>
   );
