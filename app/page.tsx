@@ -24,7 +24,7 @@ export default function Home({}) {
     const connectedAddress = getAddress();
     console.log(connectedAddress);
 
-    const url = `http://localhost:8000/promptOuraAuth?userAddress==${connectedAddress}`;
+    const url = `https://gm-ready.onrender.com/promptOuraAuth?userAddress=${connectedAddress}`;
 
     // Make the HTTP request
     const ouraAuthUrl = await fetch(url)
