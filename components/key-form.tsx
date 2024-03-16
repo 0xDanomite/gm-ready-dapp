@@ -44,7 +44,7 @@ export function KeyForm() {
       >
         <FormField
           control={form.control}
-          name="username"
+          name="key"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
