@@ -1,22 +1,21 @@
 'use client';
+import { useEffect, useState } from 'react';
 import { DynamicWidget } from '../lib/dynamic';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
-import { useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/button';
-import { KeyForm } from '@/components/key-form';
-import { Input } from '@/components/ui/input';
 
 export default function Home({}) {
   // access context from dynamic widget about logged in status
   const { isAuthenticated, user, primaryWallet } =
     useDynamicContext();
+  const [readinessData, setReadinessData] = useState(null);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const onGetReady = () => {
-    console.log('get ready', user, primaryWallet);
+  const onConnectOura = () => {
+    console.log('start oura auth flow', user, primaryWallet);
   };
 
   return (
@@ -137,8 +136,8 @@ export default function Home({}) {
               {!isAuthenticated ? (
                 <DynamicWidget />
               ) : (
-                <Button onClick={() => onGetReady()}>
-                  Get Ready
+                <Button onClick={() => onConnectOura()}>
+                  Connect to Oura
                 </Button>
               )}
             </div>
