@@ -135,7 +135,7 @@ export default function OuraPage({}) {
   }, [primaryWallet]);
 
   return (
-    <div className="container">
+    <div className="container mt-5 grid grid-cols-2 gap-5 sm:grid-cols-1">
       {username ? <h2>gm {username}</h2> : 'Loading...'}
       {/* {primaryWallet?.address === ouraAddress && ouraData && 'Connected!'} */}
       {ouraData &&

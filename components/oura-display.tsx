@@ -1,34 +1,35 @@
-'use client';
+import React from 'react';
 import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-} from '@heroicons/react/20/solid';
-import {
-  CursorArrowRaysIcon,
-  EnvelopeOpenIcon,
-  UsersIcon,
   FaceSmileIcon,
   FaceFrownIcon,
 } from '@heroicons/react/24/outline';
-function classNames(...classes: any) {
-  return classes.filter(Boolean).join(' ');
+
+// Define an interface for the ouraData object
+interface OuraData {
+  id: number;
+  score: number;
+  day: string;
 }
-export default function OuraDisplay({ ouraData }: { ouraData: any }) {
-  console.log('ouraData', ouraData);
+
+// Define props for the OuraDisplay component
+interface OuraDisplayProps {
+  ouraData: OuraData;
+}
+
+const OuraDisplay: React.FC<OuraDisplayProps> = ({ ouraData }) => {
   return (
     <div>
       <h3 className="text-base font-semibold leading-6 text-gray-900">
-        {/* Last 7 days */}
+        {/* Placeholder for potentially dynamic content */}
       </h3>
 
-      <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {/* {ouraData.map((ouraData: any) => ( */}
+      <dl className="w-full">
         <div
           key={ouraData.id}
           className="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6"
         >
           <dt>
-            <div className="absolute rounded-md bg-indigo-500 p-3">
+            <div className="absolute rounded-md bg-black p-3">
               {ouraData.score > 70 ? (
                 <FaceSmileIcon
                   className="h-6 w-6 text-white"
@@ -53,7 +54,7 @@ export default function OuraDisplay({ ouraData }: { ouraData: any }) {
               <div className="text-sm">
                 <a
                   href="#"
-                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                  className="font-medium text-black hover:text-black"
                 >
                   View more data
                   <span className="sr-only">
@@ -65,8 +66,9 @@ export default function OuraDisplay({ ouraData }: { ouraData: any }) {
             </div>
           </dd>
         </div>
-        {/* ))} */}
       </dl>
     </div>
   );
-}
+};
+
+export default OuraDisplay;
