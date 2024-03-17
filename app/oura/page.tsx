@@ -22,6 +22,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { MoreData } from '@/components/more-data';
+import { Icons } from '@/components/icons';
 
 const readinessContract = {
   address: '0x37241b8045D846Db234C214BAc22f809cE4Dbdc6',
@@ -42,7 +43,8 @@ const formatDate = (daysAgo = 0) => {
 const DataDisplay = ({ data, address }: any) => {
   const [hookHasRun, setHookHasRun] = useState(false);
   const [toggleHook, setToggleHook] = useState(false);
-
+  const [loading, setLoading] = useState(false);
+  const [localHash, setLocalHash] = useState(null);
   const { primaryWallet } = useDynamicContext();
 
   const handleSubmit = async () => {
@@ -57,16 +59,20 @@ const DataDisplay = ({ data, address }: any) => {
     console.log('client', client);
 
     const plaintext = 'Sensitive information';
-
+    setLoading(true);
     var salt = prompt(
       '🧂 Encrypt with a salt - similar to a password that protects your readiness data'
     );
 
     if (!salt) {
+      setLoading(false);
       return;
     }
 
-    const encryptedHealthData = await encryptStringWithSalt(plaintext, salt)
+    const encryptedHealthData = await encryptStringWithSalt(
+      plaintext,
+      salt
+    )
       .then((ciphertext) => {
         const ciphertextStr = Array.prototype.map
           .call(new Uint8Array(ciphertext), (x) =>
@@ -86,6 +92,10 @@ const DataDisplay = ({ data, address }: any) => {
       functionName: 'storeHealthData',
       args: [data.day, encryptedHealthData, data.score],
     });
+
+    console.log('hash', hash);
+    setLocalHash(hash);
+    setLoading(false);
   };
 
   const {
@@ -104,12 +114,20 @@ const DataDisplay = ({ data, address }: any) => {
   // @ts-ignore
   const onchainDataExists =
     // @ts-ignore
-    contractData && contractData[0]?.result?.ouraHealthDataBlob?.length > 0;
+    (contractData &&
+      contractData[0]?.result?.ouraHealthDataBlob?.length > 0) ||
+    localHash;
 
   const test = (
     <div className="mt-10">
       {!onchainDataExists ? (
-        <Button onClick={handleSubmit}>Store onchain</Button>
+        <Button onClick={handleSubmit}>
+          {loading ? (
+            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            'Store onchain'
+          )}
+        </Button>
       ) : (
         <a
           href="https://sepolia.basescan.org/address/0x37241b8045D846Db234C214BAc22f809cE4Dbdc6#readContract"
@@ -132,7 +150,8 @@ const DataDisplay = ({ data, address }: any) => {
 export default function OuraPage({}) {
   const router = useRouter();
   // access context from dynamic widget about logged in status
-  const { isAuthenticated, user, primaryWallet } = useDynamicContext();
+  const { isAuthenticated, user, primaryWallet } =
+    useDynamicContext();
   const [ouraAddress, setOuraAddress] = useState(null);
   const [ouraData, setOuraData] = useState([]);
   const [username, setUsername] = useState('');
@@ -144,7 +163,9 @@ export default function OuraPage({}) {
   const searchParams = useSearchParams();
 
   const getOuraData = (address: any, ouraToken: any) => {
-    const url = `${process.env.SERVER_URL}/getReadinessData/${formatDate(
+    const url = `${
+      process.env.SERVER_URL
+    }/getReadinessData/${formatDate(
       30
     )}/${formatDate()}?access_token=${ouraToken}&state=${address}`;
     const ouraData = fetch(url)
@@ -165,7 +186,9 @@ export default function OuraPage({}) {
       const accessToken = new URLSearchParams(fragment.slice(1)).get(
         'access_token'
       );
-      const oa: any = new URLSearchParams(fragment.slice(1)).get('state');
+      const oa: any = new URLSearchParams(fragment.slice(1)).get(
+        'state'
+      );
       setOuraAddress(oa);
 
       updateOuraKey(oa, accessToken);
@@ -228,7 +251,11 @@ export default function OuraPage({}) {
         {ouraData &&
           ouraData
             .map((d: any) => (
-              <DataDisplay key={d.id} data={d} address={ouraAddress} />
+              <DataDisplay
+                key={d.id}
+                data={d}
+                address={ouraAddress}
+              />
             ))
             .slice(1)}
       </div>
