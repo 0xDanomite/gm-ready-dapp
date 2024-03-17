@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { FaceSmileIcon, FaceFrownIcon } from '@heroicons/react/24/outline';
+import {
+  FaceSmileIcon,
+  FaceFrownIcon,
+} from '@heroicons/react/24/outline';
 import { MoreData } from './more-data';
 
 // Define an interface for the ouraData object
@@ -15,7 +18,10 @@ interface OuraDisplayProps {
   onchain: any;
 }
 
-const OuraDisplay: React.FC<OuraDisplayProps> = ({ ouraData, onchain }) => {
+const OuraDisplay: React.FC<OuraDisplayProps> = ({
+  ouraData,
+  onchain,
+}) => {
   const [viewMore, setViewMore] = useState(false);
 
   // Function to toggle the viewMore state
@@ -24,7 +30,6 @@ const OuraDisplay: React.FC<OuraDisplayProps> = ({ ouraData, onchain }) => {
   };
   return (
     <div>
-      <h3 className="text-base font-semibold leading-6 text-gray-900"></h3>
       <dl className="w-full">
         <div
           key={ouraData.id}
@@ -62,7 +67,10 @@ const OuraDisplay: React.FC<OuraDisplayProps> = ({ ouraData, onchain }) => {
                   onClick={toggleViewMore}
                 >
                   {viewMore ? 'Hide data' : 'View more data'}
-                  <span className="sr-only"> {ouraData.score} score</span>
+                  <span className="sr-only">
+                    {' '}
+                    {ouraData.score} score
+                  </span>
                 </button>
               </div>
             </div>

@@ -227,9 +227,9 @@ export default function OuraPage({}) {
             <CardHeader>
               <CardTitle>
                 {username && (
-                  <h2 className="text-xl font-semibold w-full text-center">
+                  <p className="text-xl font-semibold w-full text-center">
                     {username}
-                  </h2>
+                  </p>
                 )}
               </CardTitle>
             </CardHeader>
