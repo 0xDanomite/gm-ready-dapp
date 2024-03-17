@@ -3,7 +3,12 @@ import { useEffect, useState } from 'react';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import { addENSNameToAddress } from '@/lib/dataHelpers';
 import { useRouter } from 'next/navigation';
+import { Icons } from '@/components/icons';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
+import { cn } from '@/lib/utils';
 interface NamesData {
   [name: string]: {
     addresses: {
@@ -37,19 +42,25 @@ const findOwnedNames = (
 };
 
 const YourComponent = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const [namesData, setNamesData] = useState<NamesData>({});
   const [ownedNames, setOwnedNames] = useState<any>(null);
-  const { isAuthenticated, user, primaryWallet } = useDynamicContext();
+  const { isAuthenticated, user, primaryWallet } =
+    useDynamicContext();
   const [username, setUsername] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { value } = event.target;
     setUsername(value);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
     let processedUsername = username.toLowerCase(); // Convert username to lowercase
     if (processedUsername.length < 3) {
@@ -57,7 +68,9 @@ const YourComponent = () => {
       return;
     }
     if (!/^[a-zA-Z0-9]+$/.test(processedUsername)) {
-      setErrorMessage('Username can only contain letters and numbers.');
+      setErrorMessage(
+        'Username can only contain letters and numbers.'
+      );
       return;
     }
     // Here you can perform any further actions with the username, such as sending it to a server
@@ -142,7 +155,7 @@ const YourComponent = () => {
       console.log(address);
       const result: any = address && findOwnedNames(data, address);
       console.log(result);
-      setOwnedNames(result.names);
+      setOwnedNames(result?.names);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -157,38 +170,51 @@ const YourComponent = () => {
 
   return (
     <div>
-      {ownedNames && ownedNames.length && `gm ${ownedNames[0]}`}
+      {ownedNames && ownedNames?.length && `gm ${ownedNames[0]}`}
       {ownedNames?.length === 0 && (
-        <div>
-          <h1>Set your username</h1>
-          <form onSubmit={handleSubmit}>
-            <label>
-              Username:
-              <input
-                type="text"
-                value={username}
-                onChange={handleInputChange}
-              />
-            </label>
-            <button type="submit">Set Username</button>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-          </form>
+        <div className="container relative hidden h-[200px] flex-col items-center justify-center md:grid lg:max-w-none lg:px-0 max-[350px]">
+          <div className={cn('grid gap-6')}>
+            <form onSubmit={handleSubmit}>
+              <div className="grid gap-2">
+                <div className="grid gap-1">
+                  <Label className="sr-only" htmlFor="userName">
+                    Pick a username
+                  </Label>
+                  <Input
+                    id="userName"
+                    placeholder="steph"
+                    type="text"
+                    autoCapitalize="none"
+                    autoComplete="none"
+                    autoCorrect="off"
+                    disabled={isLoading}
+                    value={username}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <Button disabled={isLoading}>
+                  {isLoading && (
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  Set Username
+                </Button>
+              </div>
+            </form>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  {errorMessage && (
+                    <p style={{ color: 'red' }}>{errorMessage}</p>
+                  )}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
-      {/* <ul>
-        {Object.entries(namesData).map(([name, { addresses }]) => (
-          <li key={name}>
-            <strong>{name}</strong>
-            <ul>
-              {Object.entries(addresses).map(([chainId, address]) => (
-                <li key={chainId}>
-                  Chain ID: {chainId}, Address: {address}
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul> */}
     </div>
   );
 };
