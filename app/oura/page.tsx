@@ -8,6 +8,15 @@ import {
   readENSNameByAddress,
 } from '@/lib/dataHelpers';
 import OuraDisplay from '@/components/oura-display';
+import { encryptStringWithSalt } from '@/lib/starterEncryption';
+import { abi } from '@/lib/abi';
+import { useContractReads, useContractWrite } from 'wagmi';
+import { Button } from '@/components/ui/button';
+
+const readinessContract = {
+  address: '0x37241b8045D846Db234C214BAc22f809cE4Dbdc6',
+  abi,
+};
 
 const formatDate = (daysAgo = 0) => {
   const date = new Date();
@@ -20,66 +29,98 @@ const formatDate = (daysAgo = 0) => {
   return `${year}-${month}-${day}`;
 };
 
-const DataDisplay = ({ data }: any) => {
+const DataDisplay = ({ data, address }: any) => {
+  const [hookHasRun, setHookHasRun] = useState(false);
+  const [toggleHook, setToggleHook] = useState(false);
+
+  const { primaryWallet } = useDynamicContext();
+
+  const handleSubmit = async () => {
+    console.log(primaryWallet);
+
+    const connector = primaryWallet?.connector;
+
+    console.log('connector', connector);
+
+    const client: any = await connector?.getWalletClient('84532');
+
+    console.log('client', client);
+
+    const plaintext = 'Sensitive information';
+
+    var salt = prompt(
+      '🧂 Encrypt with a salt - similar to a password that protects your readiness data'
+    );
+
+    if (!salt) {
+      return;
+    }
+
+    const encryptedHealthData = await encryptStringWithSalt(plaintext, salt)
+      .then((ciphertext) => {
+        const ciphertextStr = Array.prototype.map
+          .call(new Uint8Array(ciphertext), (x) =>
+            ('00' + x.toString(16)).slice(-2)
+          )
+          .join('');
+        console.log(ciphertextStr);
+        return ciphertextStr;
+      })
+      .catch((error) => {
+        console.error('Encryption Error:', error);
+      });
+
+    const hash = await client.writeContract({
+      ...readinessContract,
+      account: address,
+      functionName: 'storeHealthData',
+      args: [data.day, encryptedHealthData, data.score],
+    });
+  };
+
+  const {
+    data: contractData,
+    isError,
+    isLoading,
+  } = useContractReads({
+    contracts: [
+      {
+        ...readinessContract,
+        functionName: 'getHealthData',
+        args: [address, data.day],
+      } as any,
+    ],
+  });
+  // @ts-ignore
+  const onchainDataExists =
+    // @ts-ignore
+    contractData && contractData[0]?.result?.ouraHealthDataBlob?.length > 0;
+
   return (
     <>
+      <div>
+        <h2>Readiness data:</h2>
+        {!onchainDataExists ? (
+          <Button onClick={handleSubmit}>Store onchain</Button>
+        ) : (
+          <a
+            href="https://sepolia.basescan.org/address/0x37241b8045D846Db234C214BAc22f809cE4Dbdc6#readContract"
+            target="_blank"
+            className="underline"
+          >
+            🔵 Based
+          </a>
+        )}
+      </div>
       <OuraDisplay ouraData={data} />
     </>
-    // <div>
-    //   <h2>Readiness data:</h2>
-    //   <strong>Day:</strong> {data.day}
-    //   <ul style={{ marginLeft: '10px' }}>
-    //     <li>
-    //       <strong>ID:</strong> {data.id}
-    //     </li>
-    //     <li>
-    //       <strong>Score:</strong> {data.score}
-    //     </li>
-    //     <li>
-    //       <strong>Timestamp:</strong> {data.timestamp}
-    //     </li>
-    //     <li>
-    //       <strong>Body Temperature:</strong> {data.body_temperature}
-    //     </li>
-    //     <li>
-    //       <strong>Resting Heart Rate:</strong> {data.resting_heart_rate}
-    //     </li>
-    //     <li>
-    //       <strong>HRV Balance:</strong> {data.hrv_balance}
-    //     </li>
-    //     <li>
-    //       <strong>Sleep Balance:</strong> {data.sleep_balance}
-    //     </li>
-    //     <li>
-    //       <strong>Activity Balance:</strong> {data.activity_balance}
-    //     </li>
-    //     <li>
-    //       <strong>Previous Night:</strong> {data.previous_night}
-    //     </li>
-    //     <li>
-    //       <strong>Recovery Index:</strong> {data.recovery_index}
-    //     </li>
-    //     <li>
-    //       <strong>Previous Day Activity:</strong> {data.previous_day_activity}
-    //     </li>
-    //     <li>
-    //       <strong>Temperature Deviation:</strong> {data.temperature_deviation}
-    //     </li>
-    //     <li>
-    //       <strong>Temperature Trend Deviation:</strong>{' '}
-    //       {data.temperature_trend_deviation}
-    //     </li>
-    //   </ul>
-    // </div>
   );
 };
 
 export default function OuraPage({}) {
   const router = useRouter();
   // access context from dynamic widget about logged in status
-  const { isAuthenticated, user, primaryWallet } =
-    useDynamicContext();
-  console.log(user, primaryWallet);
+  const { isAuthenticated, user, primaryWallet } = useDynamicContext();
   const [ouraAddress, setOuraAddress] = useState(null);
   const [ouraData, setOuraData] = useState([]);
   const [username, setUsername] = useState('');
@@ -91,17 +132,13 @@ export default function OuraPage({}) {
   const searchParams = useSearchParams();
 
   const getOuraData = (address: any, ouraToken: any) => {
-    const url = `${
-      process.env.SERVER_URL
-    }/getReadinessData/${formatDate(
+    const url = `${process.env.SERVER_URL}/getReadinessData/${formatDate(
       30
     )}/${formatDate()}?access_token=${ouraToken}&state=${address}`;
-    console.log(url);
     const ouraData = fetch(url)
       .then((response) => response.json())
       .then(({ data }) => {
         setOuraData(data);
-        console.log(data);
         return data.reverse();
       })
       .catch((error) => {
@@ -116,9 +153,7 @@ export default function OuraPage({}) {
       const accessToken = new URLSearchParams(fragment.slice(1)).get(
         'access_token'
       );
-      const oa: any = new URLSearchParams(fragment.slice(1)).get(
-        'state'
-      );
+      const oa: any = new URLSearchParams(fragment.slice(1)).get('state');
       setOuraAddress(oa);
 
       updateOuraKey(oa, accessToken);
@@ -126,22 +161,36 @@ export default function OuraPage({}) {
     } else {
       // reuse token - read from local storage
       const currentAddress = primaryWallet?.address;
-      console.log(currentAddress);
       const token = getOuraKey(primaryWallet?.address);
-      console.log(token);
+      // @ts-ignore
+      setOuraAddress(currentAddress);
       getOuraData(currentAddress, token);
       setUsername(readENSNameByAddress(currentAddress));
     }
   }, [primaryWallet]);
+
+  const {
+    data: contractData,
+    isError,
+    isLoading,
+  } = useContractReads({
+    contracts: [
+      {
+        ...readinessContract,
+        functionName: 'getHealthData',
+        args: [primaryWallet?.address, '2023-03-09'],
+      } as any,
+    ],
+  });
 
   return (
     <div className="container mt-5 grid grid-cols-2 gap-5 sm:grid-cols-1">
       {username ? <h2>gm {username}</h2> : 'Loading...'}
       {/* {primaryWallet?.address === ouraAddress && ouraData && 'Connected!'} */}
       {ouraData &&
-        ouraData
-          .slice(0, 7)
-          .map((d: any) => <DataDisplay key={d.id} data={d} />)}
+        ouraData.map((d: any) => (
+          <DataDisplay key={d.id} data={d} address={ouraAddress} />
+        ))}
     </div>
   );
 }

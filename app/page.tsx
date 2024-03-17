@@ -49,10 +49,7 @@ export default function Home({}) {
         window.location.href = data.authUri;
       })
       .catch((error) => {
-        console.error(
-          'There was a problem with the fetch operation:',
-          error
-        );
+        console.error('There was a problem with the fetch operation:', error);
       });
     console.log('uri', ouraAuthUrl);
   };
@@ -80,13 +77,9 @@ export default function Home({}) {
                 ? `@${currentUsername}.gmready.eth`
                 : '@CUSTOMENS.gmReady.eth'}
             </h2>
-            <p className="text-md text-align-left w-full">
-              Locked In...
-            </p>
+            <p className="text-md text-align-left w-full">Locked In...</p>
             <p className="text-6xl font-bold">...</p>
-            <p>
-              Login, grant access to oura and take back your data...
-            </p>
+            <p>Login, grant access to oura and take back your data...</p>
             {!primaryWallet?.address && (
               <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                 <DynamicWidget />
@@ -136,9 +129,7 @@ export default function Home({}) {
             <Card className="w-full">
               <CardHeader>
                 <CardTitle>@teddy.gmready.eth</CardTitle>
-                <CardDescription>
-                  is having a great day
-                </CardDescription>
+                <CardDescription>is having a great day</CardDescription>
               </CardHeader>
               <ProgressRing score={92}>
                 <CardContent>92</CardContent>
