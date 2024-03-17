@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { DynamicWidget } from '../lib/dynamic';
+import { DynamicWidget } from '@/lib/dynamic';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import { Button } from '@/components/ui/button';
 import {
@@ -47,7 +47,10 @@ export default function Home({}) {
         window.location.href = data.authUri;
       })
       .catch((error) => {
-        console.error('There was a problem with the fetch operation:', error);
+        console.error(
+          'There was a problem with the fetch operation:',
+          error
+        );
       });
     console.log('uri', ouraAuthUrl);
   };
@@ -68,7 +71,9 @@ export default function Home({}) {
       <div>
         {getAddress() && !checkOuraKey(getAddress()) && (
           <div className="my-20 block items-center">
-            <Button onClick={() => onConnectOura()}>Connect to Oura</Button>
+            <Button onClick={() => onConnectOura()}>
+              Connect to Oura
+            </Button>
           </div>
         )}
         {getAddress() && checkOuraKey(getAddress()) && (
