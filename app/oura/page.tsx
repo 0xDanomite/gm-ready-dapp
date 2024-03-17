@@ -248,7 +248,7 @@ export default function OuraPage({}) {
         )}
       </div>
       {/* {primaryWallet?.address === ouraAddress && ouraData && 'Connected!'} */}
-      <div className="container mt-5 grid grid-cols-2 gap-5 sm:grid-cols-1">
+      <div className="container mt-5 grid md:grid-cols-2 gap-5 sm:grid-cols-1">
         {ouraData &&
           ouraData
             .map((d: any) => (
