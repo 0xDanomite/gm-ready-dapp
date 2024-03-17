@@ -202,15 +202,21 @@ export default function OuraPage({}) {
         {ouraData && ouraData[0] && (
           <Card className="w-full justify-center items-center flex flex-col">
             <CardHeader>
-              {/* @ts-ignore */}
-              <CardTitle>{ouraData[0]?.day}</CardTitle>
+              <CardTitle>
+                {username && (
+                  <h2 className="text-xl font-semibold w-full text-center">
+                    {username}
+                  </h2>
+                )}
+              </CardTitle>
             </CardHeader>
             {/* @ts-ignore */}
             <ProgressRing score={ouraData[0].score}>
               {/* @ts-ignore */}
               <CardContent>{ouraData[0].score}</CardContent>
             </ProgressRing>
-
+            {/* @ts-ignore */}
+            <strong>{ouraData[0]?.day}</strong>
             <CardFooter className="flex justify-between">
               <MoreData ouraData={ouraData[0]} />
             </CardFooter>

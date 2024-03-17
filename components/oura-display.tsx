@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaceSmileIcon, FaceFrownIcon } from '@heroicons/react/24/outline';
+import { MoreData } from './more-data';
 
 // Define an interface for the ouraData object
 interface OuraData {
@@ -15,6 +16,12 @@ interface OuraDisplayProps {
 }
 
 const OuraDisplay: React.FC<OuraDisplayProps> = ({ ouraData, onchain }) => {
+  const [viewMore, setViewMore] = useState(false);
+
+  // Function to toggle the viewMore state
+  const toggleViewMore = () => {
+    setViewMore(!viewMore);
+  };
   return (
     <div>
       <h3 className="text-base font-semibold leading-6 text-gray-900"></h3>
@@ -50,13 +57,22 @@ const OuraDisplay: React.FC<OuraDisplayProps> = ({ ouraData, onchain }) => {
 
             <div className="absolute inset-x-0 bottom-0 bg-gray-50 px-4 py-4 sm:px-6">
               <div className="text-sm">
-                <a href="#" className="font-medium text-black hover:text-black">
-                  View more data
+                <button
+                  className="font-medium text-black hover:text-black"
+                  onClick={toggleViewMore}
+                >
+                  {viewMore ? 'Hide data' : 'View more data'}
                   <span className="sr-only"> {ouraData.score} score</span>
-                </a>
+                </button>
               </div>
             </div>
           </dd>
+          {viewMore && (
+            <div className="px-4 py-4 sm:px-6">
+              {/* @ts-ignore */}
+              <MoreData ouraData={ouraData} />
+            </div>
+          )}
         </div>
       </dl>
     </div>
