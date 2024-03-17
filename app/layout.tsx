@@ -38,7 +38,7 @@ export default function RootLayout({
           <DynamicWagmiConnector>
             <div>
               <NavBar />
-              <div className="mt-20">{children}</div>
+              <div className="mt-10">{children}</div>
             </div>
           </DynamicWagmiConnector>
         </DynamicContextProvider>

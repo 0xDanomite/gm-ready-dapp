@@ -14,8 +14,16 @@ const Navbar: React.FC = () => {
             </span>
           </span>
         </Link>
-        <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          <DynamicWidget />
+        <div className="flex">
+          <Link
+            href="https://ethglobal.com/showcase/undefined-kpry7"
+            target="_blank"
+          >
+            <span className="text-white mt-3 block mr-5">About</span>
+          </Link>
+          <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+            <DynamicWidget innerButtonComponent={'Login'} />
+          </div>
         </div>
       </div>
     </nav>

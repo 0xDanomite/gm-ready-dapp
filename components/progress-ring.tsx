@@ -62,15 +62,9 @@ const ProgressRing = ({ score, children }: any) => {
     >
       <svg width={size} height={size} className="progress-arc">
         <path
-          d={describeArc(
-            center,
-            center,
-            radius,
-            startAngle,
-            endAngle
-          )}
+          d={describeArc(center, center, radius, startAngle, endAngle)}
           fill="none"
-          stroke="black"
+          stroke="goldenrod"
           strokeWidth={strokeWidth}
         />
       </svg>

@@ -69,34 +69,40 @@ export default function Home({}) {
 
   return (
     <div className=" items-center justify-between w-full p-6 lg:px-8">
-      <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="max-w-5xl mx-auto px-4 py-8 grid  lg:grid-cols-1 gap-8">
         <div className="lg:col-span-1 bg-white rounded-lg shadow p-6">
           <div className="flex flex-col items-center">
-            <h2 className="text-xl font-semibold w-full">
-              {currentUsername
-                ? `@${currentUsername}.gmready.eth`
-                : '@CUSTOMENS.gmReady.eth'}
+            <h2 className="text-xl font-semibold w-full text-center">
+              {!!currentUsername
+                ? `gm! welcome back ${currentUsername}`
+                : 'onchain.gmReady.eth'}
             </h2>
-            <p className="text-md text-align-left w-full">Locked In...</p>
-            <p className="text-6xl font-bold">...</p>
-            <p>Login, grant access to oura and take back your data...</p>
+
+            {!currentUsername && (
+              <p className="my-5">
+                gmReady collects your daily Oura ring (a wearable fitness
+                tracker) sleep and health data and stores it onchain so you have
+                access to it forever. All data is encrypted except your daily
+                readiness score, which is intentionally sharable and attestable.
+              </p>
+            )}
             {!primaryWallet?.address && (
               <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                <DynamicWidget />
+                <DynamicWidget innerButtonComponent={'Get started'} />
               </div>
             )}
             <div>
               {getAddress() && !checkOuraKey(getAddress()) && (
-                <div className="my-20 block items-center">
+                <div className="my-10 block items-center">
                   <Button onClick={() => onConnectOura()}>
                     Connect to Oura
                   </Button>
                 </div>
               )}
               {getAddress() && checkOuraKey(getAddress()) && (
-                <div className="my-20 block">
+                <div className="my-10 block">
                   <Link href="/oura">
-                    <Button>Continue</Button>
+                    <Button>Go to your data</Button>
                   </Link>
                 </div>
               )}
@@ -104,45 +110,68 @@ export default function Home({}) {
           </div>
         </div>
         <div className="lg:col-span-2">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card className="w-full">
+          <h2 className="text-xl font-semibold w-full text-center">
+            gmReady scores are onchain and social
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card className="w-full justify-center items-center flex flex-col">
               <CardHeader>
                 <CardTitle>@steph.gmready.eth</CardTitle>
-                <CardDescription>needs help</CardDescription>
+                <CardDescription>needs to touch grass</CardDescription>
               </CardHeader>
-              <ProgressRing score={55}>
-                <CardContent>55</CardContent>
+              <ProgressRing score={42}>
+                <CardContent>42</CardContent>
               </ProgressRing>
 
               <CardFooter className="flex justify-between"></CardFooter>
             </Card>
-            <Card className="w-full">
+            <Card className="w-full justify-center items-center flex flex-col">
               <CardHeader>
                 <CardTitle>@dan.gmready.eth</CardTitle>
-                <CardDescription>is doing great</CardDescription>
+                <CardDescription>is locked in</CardDescription>
               </CardHeader>
               <ProgressRing score={82}>
                 <CardContent>82</CardContent>
               </ProgressRing>
               <CardFooter className="flex justify-between"></CardFooter>
             </Card>
-            <Card className="w-full">
+            <Card className="w-full justify-center items-center flex flex-col">
               <CardHeader>
-                <CardTitle>@teddy.gmready.eth</CardTitle>
-                <CardDescription>is having a great day</CardDescription>
+                <CardTitle>@luc.gmready.eth</CardTitle>
+                <CardDescription>is thriving</CardDescription>
               </CardHeader>
               <ProgressRing score={92}>
                 <CardContent>92</CardContent>
               </ProgressRing>
               <CardFooter className="flex justify-between"></CardFooter>
             </Card>
-            <Card className="w-full">
+            <Card className="w-full justify-center items-center flex flex-col">
               <CardHeader>
-                <CardTitle>@raza.gmready.eth</CardTitle>
+                <CardTitle>@kartik.gmready.eth</CardTitle>
                 <CardDescription>needs help</CardDescription>
               </CardHeader>
-              <ProgressRing score={55}>
-                <CardContent>55</CardContent>
+              <ProgressRing score={64}>
+                <CardContent>64</CardContent>
+              </ProgressRing>
+              <CardFooter className="flex justify-between"></CardFooter>
+            </Card>
+            <Card className="w-full justify-center items-center flex flex-col">
+              <CardHeader>
+                <CardTitle>@abena.gmready.eth</CardTitle>
+                <CardDescription>is thriving</CardDescription>
+              </CardHeader>
+              <ProgressRing score={99}>
+                <CardContent>99</CardContent>
+              </ProgressRing>
+              <CardFooter className="flex justify-between"></CardFooter>
+            </Card>
+            <Card className="w-full justify-center items-center flex flex-col">
+              <CardHeader>
+                <CardTitle>@simon.gmready.eth</CardTitle>
+                <CardDescription>needs help</CardDescription>
+              </CardHeader>
+              <ProgressRing score={69}>
+                <CardContent>69</CardContent>
               </ProgressRing>
               <CardFooter className="flex justify-between"></CardFooter>
             </Card>
