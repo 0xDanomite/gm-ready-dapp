@@ -1,3 +1,19 @@
+# gmReady
+
+gmReady was built by [Dan](https://twitter.com/_danomite) and [Steph](https://twitter.com/0ceans404) at EthGlobal London 2024
+
+gmReady collects your daily Oura ring (a wearable fitness tracker) sleep and health data and stores it onchain so you have access to it forever. All data is encrypted except your daily readiness score, which is intentionally sharable and attestable.
+
+## Links
+
+- Live dapp: [https://gm-ready-dapp.vercel.app/](https://gm-ready-dapp.vercel.app/)
+- EthGlobal Showcase / About page: [https://ethglobal.com/showcase/undefined-kpry7](https://ethglobal.com/showcase/undefined-kpry7)
+- Frontend github: [https://github.com/0xDanomite/gm-ready-dapp](https://github.com/0xDanomite/gm-ready-dapp)
+- Backend github: [https://github.com/oceans404/oura-server](https://github.com/oceans404/oura-server)
+- Base (Sepolia) smart contract: [https://sepolia.basescan.org/address/0x37241b8045D846Db234C214BAc22f809cE4Dbdc6#code](https://sepolia.basescan.org/address/0x37241b8045D846Db234C214BAc22f809cE4Dbdc6#code)
+
+# Next JS Info
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
