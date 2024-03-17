@@ -115,6 +115,7 @@ const DataDisplay = ({ data, address }: any) => {
   const onchainDataExists =
     // @ts-ignore
     (contractData &&
+      // @ts-ignore
       contractData[0]?.result?.ouraHealthDataBlob?.length > 0) ||
     localHash;
 
