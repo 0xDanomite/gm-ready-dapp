@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
         </Link>
         <div className="flex">
           <Link
-            href="https://ethglobal.com/showcase/undefined-kpry7"
+            href="https://ethglobal.com/showcase/gmready-kpry7"
             target="_blank"
           >
             <span className="text-white mt-3 block mr-5">About</span>

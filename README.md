@@ -7,7 +7,7 @@ gmReady collects your daily Oura ring (a wearable fitness tracker) sleep and hea
 ## Links
 
 - Live dapp: [https://gm-ready-dapp.vercel.app/](https://gm-ready-dapp.vercel.app/)
-- EthGlobal Showcase / About page: [https://ethglobal.com/showcase/undefined-kpry7](https://ethglobal.com/showcase/undefined-kpry7)
+- EthGlobal Showcase / About page: [https://ethglobal.com/showcase/gmready-kpry7](https://ethglobal.com/showcase/gmready-kpry7)
 - Frontend github: [https://github.com/0xDanomite/gm-ready-dapp](https://github.com/0xDanomite/gm-ready-dapp)
 - Backend github: [https://github.com/oceans404/oura-server](https://github.com/oceans404/oura-server)
 - Base (Sepolia) smart contract: [https://sepolia.basescan.org/address/0x37241b8045D846Db234C214BAc22f809cE4Dbdc6#code](https://sepolia.basescan.org/address/0x37241b8045D846Db234C214BAc22f809cE4Dbdc6#code)
