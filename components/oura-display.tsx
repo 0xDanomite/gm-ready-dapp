@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  FaceSmileIcon,
-  FaceFrownIcon,
-} from '@heroicons/react/24/outline';
+import { FaceSmileIcon, FaceFrownIcon } from '@heroicons/react/24/outline';
 
 // Define an interface for the ouraData object
 interface OuraData {
@@ -14,15 +11,13 @@ interface OuraData {
 // Define props for the OuraDisplay component
 interface OuraDisplayProps {
   ouraData: OuraData;
+  onchain: any;
 }
 
-const OuraDisplay: React.FC<OuraDisplayProps> = ({ ouraData }) => {
+const OuraDisplay: React.FC<OuraDisplayProps> = ({ ouraData, onchain }) => {
   return (
     <div>
-      <h3 className="text-base font-semibold leading-6 text-gray-900">
-        {/* Placeholder for potentially dynamic content */}
-      </h3>
-
+      <h3 className="text-base font-semibold leading-6 text-gray-900"></h3>
       <dl className="w-full">
         <div
           key={ouraData.id}
@@ -42,6 +37,8 @@ const OuraDisplay: React.FC<OuraDisplayProps> = ({ ouraData }) => {
                 />
               )}
             </div>
+            <div className="absolute right-5 top-0">{onchain}</div>
+
             <p className="ml-16 truncate text-sm font-medium text-gray-500">
               {ouraData.day}
             </p>
@@ -50,17 +47,12 @@ const OuraDisplay: React.FC<OuraDisplayProps> = ({ ouraData }) => {
             <p className="text-2xl font-semibold text-gray-900">
               {ouraData.score}
             </p>
+
             <div className="absolute inset-x-0 bottom-0 bg-gray-50 px-4 py-4 sm:px-6">
               <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-medium text-black hover:text-black"
-                >
+                <a href="#" className="font-medium text-black hover:text-black">
                   View more data
-                  <span className="sr-only">
-                    {' '}
-                    {ouraData.score} score
-                  </span>
+                  <span className="sr-only"> {ouraData.score} score</span>
                 </a>
               </div>
             </div>

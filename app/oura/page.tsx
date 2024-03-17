@@ -12,6 +12,16 @@ import { encryptStringWithSalt } from '@/lib/starterEncryption';
 import { abi } from '@/lib/abi';
 import { useContractReads, useContractWrite } from 'wagmi';
 import { Button } from '@/components/ui/button';
+import ProgressRing from '@/components/progress-ring';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { MoreData } from '@/components/more-data';
 
 const readinessContract = {
   address: '0x37241b8045D846Db234C214BAc22f809cE4Dbdc6',
@@ -96,23 +106,25 @@ const DataDisplay = ({ data, address }: any) => {
     // @ts-ignore
     contractData && contractData[0]?.result?.ouraHealthDataBlob?.length > 0;
 
+  const test = (
+    <div className="mt-10">
+      {!onchainDataExists ? (
+        <Button onClick={handleSubmit}>Store onchain</Button>
+      ) : (
+        <a
+          href="https://sepolia.basescan.org/address/0x37241b8045D846Db234C214BAc22f809cE4Dbdc6#readContract"
+          target="_blank"
+          className="underline"
+        >
+          🔵 Based
+        </a>
+      )}
+    </div>
+  );
+
   return (
     <>
-      <div>
-        <h2>Readiness data:</h2>
-        {!onchainDataExists ? (
-          <Button onClick={handleSubmit}>Store onchain</Button>
-        ) : (
-          <a
-            href="https://sepolia.basescan.org/address/0x37241b8045D846Db234C214BAc22f809cE4Dbdc6#readContract"
-            target="_blank"
-            className="underline"
-          >
-            🔵 Based
-          </a>
-        )}
-      </div>
-      <OuraDisplay ouraData={data} />
+      <OuraDisplay ouraData={data} onchain={test} />
     </>
   );
 };
@@ -184,13 +196,36 @@ export default function OuraPage({}) {
   });
 
   return (
-    <div className="container mt-5 grid grid-cols-2 gap-5 sm:grid-cols-1">
-      {username ? <h2>gm {username}</h2> : 'Loading...'}
+    <div className="container mt-20">
+      {!username && 'Loading...'}
+      <div>
+        {ouraData && ouraData[0] && (
+          <Card className="w-full justify-center items-center flex flex-col">
+            <CardHeader>
+              {/* @ts-ignore */}
+              <CardTitle>{ouraData[0]?.day}</CardTitle>
+            </CardHeader>
+            {/* @ts-ignore */}
+            <ProgressRing score={ouraData[0].score}>
+              {/* @ts-ignore */}
+              <CardContent>{ouraData[0].score}</CardContent>
+            </ProgressRing>
+
+            <CardFooter className="flex justify-between">
+              <MoreData ouraData={ouraData[0]} />
+            </CardFooter>
+          </Card>
+        )}
+      </div>
       {/* {primaryWallet?.address === ouraAddress && ouraData && 'Connected!'} */}
-      {ouraData &&
-        ouraData.map((d: any) => (
-          <DataDisplay key={d.id} data={d} address={ouraAddress} />
-        ))}
+      <div className="container mt-5 grid grid-cols-2 gap-5 sm:grid-cols-1">
+        {ouraData &&
+          ouraData
+            .map((d: any) => (
+              <DataDisplay key={d.id} data={d} address={ouraAddress} />
+            ))
+            .slice(1)}
+      </div>
     </div>
   );
 }
